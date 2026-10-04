@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Roma 2026 · Ernesto e Graziella</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Cinzel:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F0F1EE; --card:#FBFBF9; --ink:#1E2230; --mute:#565B6B; --line:#D6D8D1;
+  --red:#9B2335; --on-red:#FFFFFF; --gold:#B8862B; --gold-soft:#F3E7C9; --gold-ink:#6B4C0F;
+  --green:#2F6B4A; --on-green:#FFFFFF; --green-soft:#DDEBE1; --waze:#33C3F0; --on-waze:#0F2A36;
+  --track:#D9DBD3;
+  --s:1.1;
+  --display:"Cinzel","Trajan Pro",Georgia,serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#14161C; --card:#1F222B; --ink:#F0EDE6; --mute:#A9ADBB; --line:#343846;
+    --red:#C8475A; --gold:#D8A94A; --gold-soft:#3A3120; --gold-ink:#F0D9A0;
+    --green:#3F8A60; --green-soft:#1F3328; --track:#343846;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#14161C; --card:#1F222B; --ink:#F0EDE6; --mute:#A9ADBB; --line:#343846;
+  --red:#C8475A; --gold:#D8A94A; --gold-soft:#3A3120; --gold-ink:#F0D9A0;
+  --green:#3F8A60; --green-soft:#1F3328; --track:#343846;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{font-size:calc(var(--s) * 18px);height:100%;scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.45;font-size:1rem}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:10px}
+
+/* ---------- barra hotel sempre visibile ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--bg);padding:.55rem .8rem .6rem;border-bottom:2px solid var(--line);display:flex;gap:.5rem}
+.call{flex:1;display:flex;align-items:center;gap:.7rem;background:var(--red);color:var(--on-red);text-decoration:none;border-radius:16px;padding:.5rem .9rem;min-height:3.6rem;box-shadow:0 3px 0 rgba(0,0,0,.25);transition:transform .12s}
+.call:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.25)}
+.call svg{width:1.7rem;height:1.7rem;flex:none}
+.call b{display:block;font-size:1.12rem;line-height:1.15}
+.call small{display:block;font-size:.84rem;opacity:.92}
+.hotelnav{width:4.6rem;flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1rem;text-decoration:none;background:var(--card);border:2px solid var(--line);border-radius:16px;font-size:.78rem;font-weight:700;text-align:center;line-height:1.1}
+.hotelnav svg{width:1.4rem;height:1.4rem;color:var(--red)}
+
+main{max-width:640px;margin:0 auto;padding:0 .9rem 5rem}
+
+/* ---------- testata ---------- */
+.hero{padding:1.1rem .2rem .5rem;position:relative}
+.hero .hi{margin:0;color:var(--mute);font-size:1rem}
+.hero h1{margin:.1rem 0 0;font-family:var(--display);font-weight:800;font-size:2.5rem;line-height:1;letter-spacing:.06em}
+.hero .who{margin:.25rem 0 0;font-size:1.05rem}
+.hero .size{position:absolute;right:.2rem;top:1rem;background:var(--card);border:2px solid var(--line);border-radius:999px;padding:.3rem .8rem;font-weight:700;font-size:.9rem;min-height:2.4rem}
+.road{display:block;width:100%;height:12px;margin-top:.7rem;color:var(--red)}
+.road path{stroke-dasharray:640;stroke-dashoffset:640;animation:draw 1.6s .15s ease-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+
+/* ---------- schede dei giorni ---------- */
+.tabs{position:relative;display:grid;grid-template-columns:repeat(4,1fr);background:var(--card);border:2px solid var(--line);border-radius:18px;margin:.8rem 0 1rem;padding:4px}
+.tabs .pill{position:absolute;top:4px;bottom:4px;left:4px;width:calc((100% - 8px)/4);background:var(--ink);border-radius:14px;transition:transform .35s cubic-bezier(.3,.8,.3,1)}
+.tab{position:relative;z-index:1;background:none;border:0;padding:.45rem 0 .4rem;text-align:center;border-radius:14px;color:var(--ink);transition:color .25s;min-height:3.6rem}
+.tab .n{display:block;font-family:var(--display);font-weight:800;font-size:1.55rem;line-height:1}
+.tab .w{display:block;font-size:.8rem;font-weight:700;margin-top:.15rem}
+.tab.on{color:var(--bg)}
+.tab .oggi{position:absolute;top:2px;right:6px;width:.6rem;height:.6rem;border-radius:50%;background:var(--gold);border:2px solid var(--card)}
+
+.daytitle{margin:.2rem .2rem .7rem}
+.daytitle h2{margin:0;font-size:1.45rem;line-height:1.2}
+.daytitle p{margin:.15rem 0 0;color:var(--mute);font-size:.98rem}
+
+/* ---------- scelta mercoledì ---------- */
+.variant{background:var(--gold-soft);border-radius:16px;padding:.7rem .8rem;margin:0 0 1rem;color:var(--gold-ink)}
+.variant p{margin:0 0 .5rem;font-weight:700}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:.45rem}
+.seg button{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:.55rem .4rem;font-weight:700;font-size:.92rem;line-height:1.2;color:var(--ink);min-height:3rem}
+.seg button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* ---------- avanzamento ---------- */
+.prog{margin:0 .2rem 1rem}
+.prog .lbl{display:flex;justify-content:space-between;font-weight:700;font-size:.95rem;margin-bottom:.4rem}
+.segs{display:flex;gap:3px}
+.segs i{flex:1;height:10px;border-radius:3px;background:var(--track);transition:background .4s}
+.segs i.d{background:var(--green)}
+.segs i.c{background:var(--red)}
+
+/* ---------- avviso orario ---------- */
+.nudge{display:flex;gap:.6rem;align-items:center;background:var(--card);border:2px dashed var(--gold);border-radius:14px;padding:.6rem .8rem;margin-bottom:1rem;font-size:.95rem}
+.nudge button{flex:none;background:var(--gold);color:#201807;border:0;border-radius:10px;padding:.5rem .8rem;font-weight:700;min-height:2.6rem}
+
+/* ---------- tappa in primo piano ---------- */
+.focus{position:relative;background:var(--card);border:2px solid var(--ink);border-radius:22px;padding:1.5rem 1rem 1rem;margin-bottom:1.3rem;scroll-margin-top:calc(env(safe-area-inset-top,0px) + 5.4rem)}
+.focus::before{content:"";position:absolute;left:14px;right:14px;top:8px;height:12px;background:var(--red);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='12' viewBox='0 0 20 12'%3E%3Cpath d='M0 10.5H20M17 10.5V1.5H3.5V7.5H12.5V5.5' fill='none' stroke='black' stroke-width='1.7'/%3E%3C/svg%3E") repeat-x 0 0/20px 12px;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='12' viewBox='0 0 20 12'%3E%3Cpath d='M0 10.5H20M17 10.5V1.5H3.5V7.5H12.5V5.5' fill='none' stroke='black' stroke-width='1.7'/%3E%3C/svg%3E") repeat-x 0 0/20px 12px}
+.focus.in{animation:slidein .45s cubic-bezier(.2,.8,.25,1)}
+@keyframes slidein{from{opacity:0;transform:translateX(34px)}to{opacity:1;transform:none}}
+.focus .when{display:flex;align-items:center;gap:.6rem;margin-top:.2rem}
+.coin{flex:none;width:3.3rem;height:3.3rem;border-radius:50%;display:grid;place-items:center;font-size:1.65rem;background:radial-gradient(circle at 35% 30%,#F6E3A8,#D7A93E 70%);border:3px solid #8A6414;box-shadow:inset 0 0 0 2px rgba(255,255,255,.35)}
+.time{font-family:var(--display);font-weight:800;font-size:1.35rem;letter-spacing:.03em}
+.focus h3{margin:.7rem 0 .15rem;font-size:1.75rem;line-height:1.15}
+.focus .place{margin:0;color:var(--mute);font-size:1.02rem}
+.badges{display:flex;flex-wrap:wrap;gap:.4rem;margin:.65rem 0 0}
+.badge{display:inline-block;font-weight:700;font-size:.88rem;padding:.2rem .65rem;border-radius:999px;border:2px solid currentColor}
+.b-pay{color:var(--gold-ink);background:var(--gold-soft);border-color:var(--gold)}
+.b-free{color:var(--green);background:var(--green-soft);border-color:var(--green)}
+.b-book{color:var(--red);border-color:var(--red)}
+.b-meta{color:var(--mute);border-color:var(--line)}
+.go{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-top:1rem}
+.btn{display:flex;align-items:center;justify-content:center;gap:.5rem;min-height:3.5rem;border-radius:16px;border:0;text-decoration:none;font-weight:700;font-size:1.05rem;text-align:center;line-height:1.15;padding:.5rem .6rem;transition:transform .12s}
+.btn:active{transform:scale(.97)}
+.btn svg{width:1.4rem;height:1.4rem;flex:none}
+.btn.gm{background:var(--red);color:var(--on-red)}
+.btn.wz{background:var(--waze);color:var(--on-waze)}
+.btn.done{background:var(--green);color:var(--on-green);width:100%;min-height:4rem;font-size:1.2rem;margin-top:.7rem;box-shadow:0 3px 0 rgba(0,0,0,.25)}
+.btn.ghost{background:var(--card);color:var(--ink);border:2px solid var(--line)}
+.btn.full{width:100%}
+.how-t{width:100%;margin-top:.7rem;background:none;border:2px solid var(--line);border-radius:14px;min-height:3rem;display:flex;align-items:center;justify-content:space-between;padding:.4rem .9rem;font-weight:700}
+.how-t svg{width:1.2rem;height:1.2rem;transition:transform .3s}
+.how-t[aria-expanded="true"] svg{transform:rotate(180deg)}
+.how{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease}
+.how.open{grid-template-rows:1fr}
+.how>div{overflow:hidden}
+.how p{margin:.7rem .1rem .2rem;font-size:1.05rem;line-height:1.55}
+.back{display:block;margin:.6rem auto 0;background:none;border:0;text-decoration:underline;text-underline-offset:3px;font-weight:700;color:var(--mute);min-height:2.6rem;padding:.3rem 1rem}
+
+/* ---------- elenco della giornata (via con pietre miliari) ---------- */
+.sect{margin:1.5rem .2rem .6rem;font-size:1.2rem}
+.list{list-style:none;margin:0 0 1.2rem;padding:0;position:relative}
+.list::before{content:"";position:absolute;left:1.35rem;top:1.2rem;bottom:1.2rem;width:4px;border-radius:2px;background:repeating-linear-gradient(to bottom,var(--track) 0 10px,transparent 10px 16px)}
+.row{position:relative;display:flex;gap:.7rem;align-items:center;width:100%;text-align:left;background:none;border:0;border-radius:14px;padding:.45rem .4rem;min-height:3.4rem}
+.row .dot{flex:none;width:2.1rem;height:2.1rem;margin:0 .15rem;border-radius:50%;display:grid;place-items:center;background:var(--card);border:3px solid var(--track);font-size:1rem;position:relative;z-index:1;transition:background .3s,border-color .3s}
+.row .dot svg{width:1.05rem;height:1.05rem;color:#fff}
+.row .tx{flex:1;min-width:0}
+.row .tt{display:block;font-weight:700;line-height:1.2}
+.row .tm{display:block;color:var(--mute);font-size:.88rem}
+.row.past .dot{background:var(--green);border-color:var(--green)}
+.row.past .tt{color:var(--mute);text-decoration:line-through;text-decoration-thickness:1.5px}
+.row.cur{background:var(--card);outline:2px solid var(--red)}
+.row.cur .dot{border-color:var(--red);background:var(--red);box-shadow:0 0 0 5px rgba(155,35,53,.2)}
+.row.cur .dot::after{content:"";width:.6rem;height:.6rem;border-radius:50%;background:#fff}
+
+/* ---------- se avanza tempo ---------- */
+.extra{background:var(--card);border:2px solid var(--gold);border-radius:18px;padding:.9rem;margin-top:.6rem}
+.extra h4{margin:0 0 .2rem;font-size:1.15rem}
+.extra .wh{margin:0 0 .5rem;color:var(--gold-ink);background:var(--gold-soft);display:inline-block;padding:.15rem .6rem;border-radius:8px;font-weight:700;font-size:.92rem}
+.extra p{margin:.4rem 0}
+.extra .go{margin-top:.7rem}
+
+/* ---------- giornata finita ---------- */
+.fin{text-align:center;background:var(--card);border:2px solid var(--ink);border-radius:22px;padding:1.6rem 1rem 1.2rem;margin-bottom:1.3rem}
+.seal{width:6.2rem;height:6.2rem;margin:0 auto .6rem;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:1.05rem;letter-spacing:.08em;box-shadow:inset 0 0 0 5px rgba(255,255,255,.18),inset 0 0 0 7px var(--red);border:3px dashed rgba(255,255,255,.55);animation:seal .7s cubic-bezier(.2,1.3,.3,1)}
+@keyframes seal{from{transform:scale(2) rotate(-20deg);opacity:0}to{transform:none;opacity:1}}
+.fin h3{margin:.2rem 0;font-size:1.6rem}
+.fin p{margin:.3rem 0 1rem;color:var(--mute)}
+
+/* ---------- info ---------- */
+.card{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:1rem;margin-bottom:.9rem}
+.card h3{margin:0 0 .3rem;font-size:1.3rem}
+.card p{margin:.3rem 0}
+.card .go{margin-top:.8rem}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:.2rem .8rem;margin:.5rem 0}
+.kv dt{color:var(--mute)} .kv dd{margin:0;font-weight:700}
+.fields{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-top:.6rem}
+.fields label{display:block;font-size:.85rem;font-weight:700;color:var(--mute)}
+.fields input{width:100%;margin-top:.2rem;font:inherit;font-weight:700;font-size:1.1rem;padding:.55rem .6rem;border:2px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);min-height:3rem}
+.hint{font-size:.88rem;color:var(--mute)}
+.reset{width:100%;background:none;border:2px solid var(--line);border-radius:14px;min-height:3.2rem;font-weight:700;color:var(--mute)}
+.reset.sure{border-color:var(--red);color:var(--red)}
+
+/* timbro "fatto" */
+#stamp{position:fixed;inset:0;display:grid;place-items:center;pointer-events:none;z-index:60}
+#stamp div{border:7px solid var(--green);color:var(--green);border-radius:18px;padding:.4rem 1.4rem;font-family:var(--display);font-weight:800;font-size:3rem;letter-spacing:.1em;background:color-mix(in srgb,var(--bg) 82%,transparent);opacity:0}
+#stamp.go div{animation:stamp .95s ease-out}
+@keyframes stamp{0%{opacity:0;transform:scale(2.4) rotate(-16deg)}25%{opacity:1;transform:scale(1) rotate(-9deg)}75%{opacity:1;transform:scale(1) rotate(-9deg)}100%{opacity:0;transform:scale(.96) rotate(-9deg)}}
+
+@media (max-width:360px){.go{grid-template-columns:1fr}.fields{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;animation-delay:0s !important;transition-duration:.01ms !important}
+  .road path{stroke-dashoffset:0}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a class="call" href="tel:+39064465399" aria-label="Chiama l'hotel Ariston, 06 446 5399">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>
+    <span><b>Chiama l'hotel</b><small>Hotel Ariston · 06 446 5399</small></span>
+  </a>
+  <a class="hotelnav" id="hotelnav" href="#" target="_blank" rel="noopener" aria-label="Portami in hotel con Google Maps">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+    Portami in hotel
+  </a>
+</header>
+
+<main>
+  <div id="app"></div>
+</main>
+
+<div id="stamp" aria-hidden="true"><div>FATTO</div></div>
+
+<script>
+/* ============ DATI DEL VIAGGIO ============ */
+const HOTEL = { nome:"Hotel Ariston", ind:"Via Filippo Turati 16, Roma", tel:"+39064465399", telTxt:"06 446 5399", q:"Hotel Ariston, Via Filippo Turati 16, Roma" };
+const S_ = (a,b,ic,t,p,q,m,h,tag,tm)=>({a,b,ic,t,p,q,m,h,tag,tm});
+
+const WA = [
+ S_("11:00","11:15","🚆","Arrivo a Termini e deposito bagagli","Hotel Ariston · Via Filippo Turati 16",HOTEL.q,"Italo 9941 · arrivo 11:01",
+   "Esci dai binari e tieni la sinistra per uscire su Via Giolitti. Attraversa, gira a sinistra e prendi la prima a destra (Via Gioberti). Cammina dritto per due isolati, gira a sinistra in Via Filippo Turati fino al civico 16. Lascia i bagagli al deposito della reception."),
+ S_("11:15","11:30","☕","Caffè del mattino","Bar di quartiere su Via dell'Olmata","Via dell'Olmata, Roma","A piedi 5 min · Sosta 10 min",
+   "Esci dall'hotel, gira a sinistra su Via Turati fino all'angolo della piazza. Gira a sinistra in Via dell'Olmata. Fermati in un bar per un caffè al bancone."),
+ S_("11:30","11:40","🏛️","Obelisco di Santa Maria Maggiore","Piazza di Santa Maria Maggiore","Piazza di Santa Maria Maggiore, Roma","A piedi 2 min · Sosta 8 min",
+   "Esci dal bar e vai sempre dritto su Via dell'Olmata fino alla piazza. L'obelisco è dietro la basilica."),
+ S_("11:40","11:55","⛪","Mosaici di Santa Prassede","Basilica di Santa Prassede","Basilica di Santa Prassede, Roma","A piedi 2 min · Sosta 13 min",
+   "Dai piedi dell'obelisco tieni il lato sinistro della piazza e imbocca Via di Santa Prassede (il vicolo sul fianco della chiesa). L'ingresso è a sinistra al civico 9/a, per i mosaici del Sacello di San Zenone."),
+ S_("11:55","12:05","🪜","La scalinata dei Borgia","Via Cavour","Scalinata dei Borgia, Via Cavour, Roma","A piedi 6 min · Sosta 4 min",
+   "Esci, gira a sinistra fino in fondo al vicolo, poi a sinistra in Via Urbana e subito a destra per scendere su Via Cavour. Attraversa sulle strisce: di fronte c'è la scalinata sotto l'arco di edera. Salila."),
+ S_("12:05","12:20","🚶","Passeggiata nel rione","Via Urbana","Via Urbana, Roma","Camminata 15 min",
+   "In cima alla scalinata vai a sinistra in Piazza di S. Francesco di Paola, poi prendi il vicolo a sinistra (Via dei Capocci). In fondo gira a destra in Via Urbana e percorrila tutta dritta."),
+ S_("12:20","12:35","⛪","Affaccio di San Lorenzo","Chiesa di San Lorenzo in Panisperna","Chiesa di San Lorenzo in Panisperna, Roma","A piedi 3 min · Sosta 12 min",
+   "Mentre cammini su Via Urbana gira alla prima a sinistra in Via Panisperna e sali. In cima, sulla destra, sali la doppia rampa di scale che porta al cortile rialzato della chiesa."),
+ S_("12:35","12:55","⛪","San Vitale, sotto il livello della strada","Via Nazionale · Basilica di San Vitale","Basilica di San Vitale, Via Nazionale, Roma","A piedi 8 min · Sosta 12 min",
+   "Scendi dal cortile e vai a destra su Via Panisperna. Al primo incrocio gira a destra in Via Milano fino in fondo. Gira a sinistra su Via Nazionale, cammina 50 metri e a sinistra trovi la scalinata che scende alla chiesa."),
+ S_("12:55","13:15","🍕","Spuntino veloce","Forno o alimentari a Monti","Via dei Serpenti, Roma","A piedi 5 min · Sosta 15 min",
+   "Risali da San Vitale, attraversa Via Nazionale e scendi su Via Milano. Prendi la prima a sinistra (Via dei Serpenti). Fermati in un forno o alimentari per un pezzo di pizza bianca o focaccia, da mangiare in piedi."),
+ S_("13:15","13:55","🏨","Rientro in hotel e check-in","Hotel Ariston","" + HOTEL.q,"A piedi 15 min · Sosta 25 min",
+   "Continua su Via dei Serpenti, gira a sinistra in Via Cavour, poi a destra in Via Santa Maria Maggiore. Attraversa la piazza, prosegui in Via dell'Olmata e gira a destra in Via Turati. Check-in e breve sosta in camera.")
+];
+const TOUR = WA.slice(3,8).map(x=>({...x}));
+const WB = [
+ S_("11:00","11:30","🏨","Arrivo, check-in e sistemazione","Hotel Ariston · Via Filippo Turati 16",HOTEL.q,"Italo 9941 · arrivo 11:01",
+   "Esci da Termini lato Via Giolitti (a sinistra dai binari). Attraversa, vai a sinistra e prendi la prima a destra (Via Gioberti). Gira alla seconda a sinistra (Via Turati). Entra all'Hotel Ariston al civico 16, fai il check-in e sali in camera."),
+ S_("11:30","11:45","🏛️","Obelisco di Santa Maria Maggiore","Piazza di Santa Maria Maggiore","Piazza di Santa Maria Maggiore, Roma","A piedi 7 min · Sosta 8 min",
+   "Esci dall'hotel, vai a sinistra fino in fondo a Via Turati. Gira a sinistra in Via dell'Olmata e cammina dritto fino alla piazza dell'obelisco."),
+ ...TOUR.map((x,i)=> i===0 ? {...x,a:"11:45"} : x),
+ S_("12:55","13:15","🍕","Spuntino veloce","Alimentari o forno di zona","Via Panisperna, Roma","A piedi 3 min · Sosta 17 min",
+   "Da San Vitale risali su Via Nazionale, attraversa la strada e prendi Via Milano in discesa. Gira alla prima a sinistra (Via Panisperna). Fermati in un alimentari o forno della via per un trancio di focaccia da asporto."),
+ S_("13:15","13:55","🏨","Rientro a piedi e riposo","Hotel Ariston",HOTEL.q,"A piedi 15 min · Sosta 25 min",
+   "Da Via Panisperna gira a destra in Via Urbana. Sali tutta la via, gira a destra in Via S. Maria Maggiore, prosegui in Via dell'Olmata e gira a destra in Via Turati. Riposo prima di ripartire.")
+];
+const WR = [
+ S_("13:55","14:25","⛪","San Pietro in Vincoli: il Mosè","Piazza di San Pietro in Vincoli","Basilica di San Pietro in Vincoli, Roma","A piedi 15 min · Sosta 15 min",
+   "Dall'hotel vai a sinistra su Via Turati fino in fondo, poi a sinistra in Via dell'Olmata e a sinistra su Via Cavour (marciapiede sinistro). Gira a sinistra sulla scalinata di S. Francesco di Paola, sotto l'arco. La chiesa è in cima, a destra."),
+ S_("14:25","14:45","🌇","Belvedere sul Colosseo","Via Nicola Salvi","Via Nicola Salvi, Roma","A piedi 3 min · Sosta 17 min",
+   "Esci dalla chiesa, gira a sinistra e scendi la scalinata di fronte (Via Gaetana Agnesi). Arrivi sulla terrazza panoramica di Via Nicola Salvi, affacciata sul Colosseo."),
+ S_("14:45","15:10","⛪","Mosaici dei Santi Cosma e Damiano","Via dei Fori Imperiali","Basilica dei Santi Cosma e Damiano, Roma","A piedi 5 min · Sosta 20 min",
+   "Dalla terrazza scendi le scale fino alla strada. Con il Colosseo alle spalle, prendi a sinistra Via dei Fori Imperiali (marciapiede sinistro). L'ingresso è a sinistra dopo 300 metri."),
+ S_("15:10","15:40","🏛️","Campidoglio e terrazza sul Foro","Piazza del Campidoglio","Piazza del Campidoglio, Roma","A piedi 12 min · Sosta 18 min",
+   "Esci e vai a sinistra, dritto su Via dei Fori Imperiali fino in fondo. Gira a sinistra in Piazza d'Aracoeli e sali la cordonata. Vai dietro il palazzo centrale, a destra, per la vista sul Foro Romano."),
+ S_("15:40","16:00","🏛️","Scorcio sui Mercati di Traiano","Via IV Novembre","Mercati di Traiano, Via IV Novembre, Roma","A piedi 12 min · Sosta 8 min",
+   "Scendi la cordonata, vai a destra costeggiando il monumento bianco ed esci su Piazza Venezia. Tieni la destra, attraversa e imbocca in salita Via IV Novembre (marciapiede destro). Guarda i resti dal muretto."),
+ S_("16:00","16:40","🏛️","Pantheon (solo esterno)","Piazza della Rotonda","Pantheon, Piazza della Rotonda, Roma","A piedi 13 min · Sosta 27 min",
+   "Torna giù su Via IV Novembre fino a Piazza Venezia. Gira a destra in Via del Corso (marciapiede sinistro). Gira alla quinta a sinistra (Via del Caravita) e vai sempre dritto fino alla piazza."),
+ S_("16:40","17:15","⛲","Sosta a Piazza Navona","Fontana dei Quattro Fiumi","Piazza Navona, Roma","A piedi 5 min · Sosta 30 min",
+   "Con il Pantheon alle spalle prendi la via sul lato sinistro (Via Giustiniani). Vai sempre dritto, supera Palazzo Madama ed entra sotto l'arco. Cammina fino alla Fontana dei Quattro Fiumi."),
+ S_("17:15","17:55","⛲","Fontana di Trevi","Piazza di Trevi","Fontana di Trevi, Roma","A piedi 12 min · Sosta 28 min",
+   "Esci da Piazza Navona verso est (la via da cui sei venuto). Torna dritto fino a Via del Corso, attraversala ed entra nella via di fronte (Via delle Muratte). Percorrila tutta fino alla fontana."),
+ S_("17:55","18:35","⛲","Fontana del Mosè","Piazza San Bernardo · Via Nazionale","Fontana del Mosè, Piazza San Bernardo, Roma","A piedi 25 min, passo lento · Sosta 15 min",
+   "Con la fontana alle spalle prendi il vicolo a sinistra (Via S. Vincenzo che diventa Via in Arcione). Passa il traforo pedonale, esci su Via Nazionale e sali a sinistra fino alla rotonda. Gira a sinistra in Via Torino fino alla fontana."),
+ S_("18:35","18:45","🏨","Rientro in hotel","Via Filippo Turati 16",HOTEL.q,"A piedi 10 min",
+   "Dalla fontana rifai Via Torino in discesa. Gira a sinistra in Via Viminale, costeggia la stazione Termini sul marciapiede destro e gira a sinistra in Via Filippo Turati fino al civico 16."),
+ S_("18:45","20:20","🛁","Relax in hotel","Hotel Ariston",HOTEL.q,"Riposo 1 ora e 35",
+   "Tempo per fare la doccia, riposare le gambe e cambiarsi per la serata, senza fretta."),
+ S_("20:20","20:30","🚶","Due passi prima di cena","Via Gioberti","Via Gioberti, Roma","A piedi 10 min",
+   "Esci dall'hotel, gira a sinistra su Via Turati e prendi la prima a destra (Via Gioberti). Cammina lentamente lungo la via, oltre il ristorante, per fare due passi prima di cena."),
+ S_("20:30",null,"🍝","Cena alla Trattoria Cecio","Via Gioberti 26","Trattoria Cecio, Via Gioberti 26, Roma","",
+   "Torna indietro di pochi metri su Via Gioberti 26. La trattoria è sulla sinistra. Il tavolo è prenotato per le 20:30.","book")
+];
+
+const THU = [
+ S_("08:15","10:45","🚇","Hotel → Università Unicusano","Metro A fino a Battistini, poi bus 146","Università Niccolò Cusano, Roma","Circa 2 ore e mezza con le pratiche",
+   "Esci dall'hotel, a sinistra su Via Turati, a destra su Via Gioberti ed entra a Termini. Prendi la Metro A (direzione Battistini) fino al capolinea. Esci e prendi il bus 146 per 8 fermate fino alla sede dell'università. Sosta di 30 minuti per le pratiche. Poi fai il percorso inverso fino a Metro A Barberini.",null,"transit"),
+ S_("10:45","11:00","☕","Pausa caffè","Caffè Barberini · Via Barberini 13","Via Barberini 13, Roma","Sosta 15 min",
+   "Esci dalla metropolitana in Piazza Barberini e imbocca la grande Via Barberini. La pasticceria è sul marciapiede di destra, al civico 13. Caffè al bancone."),
+ S_("11:00","11:15","🚶","Verso la Galleria Sciarra","Piazza Barberini → Via del Tritone","Galleria Sciarra, Via del Caravita, Roma","A piedi 15 min",
+   "Da Piazza Barberini scendi lungo Via del Tritone (lato sinistro della piazza). Gira alla quinta a sinistra (Via della Stamperia), cammina fino in fondo, gira a destra in Via del Caravita ed entra a sinistra sotto l'arco di mattoni."),
+ S_("11:15","11:40","🎨","Cortile della Galleria Sciarra","Via del Caravita","Galleria Sciarra, Via del Caravita, Roma","Sosta 25 min",
+   "Visita del cortile pedonale affrescato in stile Liberty.","free"),
+ S_("11:40","12:00","🚶","Verso Palazzo Barberini","Via delle Quattro Fontane 13","Palazzo Barberini, Via delle Quattro Fontane 13, Roma","A piedi 20 min",
+   "Esci dall'arco, a sinistra su Via del Caravita, a destra su Via della Stamperia. In fondo gira a destra risalendo tutta Via del Tritone. Al semaforo gira a sinistra in Via delle Quattro Fontane fino al civico 13."),
+ S_("12:00","13:10","🖼️","Palazzo Barberini","Galleria Nazionale d'Arte Antica","Palazzo Barberini, Via delle Quattro Fontane 13, Roma","Visita 70 min",
+   "Visita all'interno della galleria per vedere le scale monumentali di Bernini e Borromini e le collezioni barocche.","pay"),
+ S_("13:10","13:20","🚶","Verso il pranzo","Piazza della Rotonda","Piazza della Rotonda 4, Roma","A piedi 10 min",
+   "Esci dal museo, gira a destra, poi a sinistra scendendo su Via del Tritone. Gira alla sesta a sinistra (Via San Claudio), attraversa Via del Corso, prosegui dritto in Via delle Muratte e segui i vicoli fino al Pantheon."),
+ S_("13:20","14:00","🧀","Pranzo all'Antica Salumeria","Piazza della Rotonda 4","Antica Salumeria, Piazza della Rotonda 4, Roma","Sosta 40 min",
+   "Pranzo al banco o ai tavoli alti con taglieri di salumi, formaggi e panini caldi tradizionali. Servizio rapido, senza lunghe attese."),
+ S_("14:00","14:20","⛪","Sant'Ignazio di Loyola","Piazza di Sant'Ignazio","Chiesa di Sant'Ignazio di Loyola, Roma","A piedi 3 min · Sosta 17 min",
+   "Con il Pantheon alle spalle prendi la via di fronte (Via dei Pastini), gira alla prima a destra (Via de' Burrò) fino alla piazza. Entra e mettiti sul cerchio dorato nel pavimento per vedere la finta cupola dipinta."),
+ S_("14:20","14:40","🏛️","Cortile del Collegio Romano","Piazza del Collegio Romano 4","Piazza del Collegio Romano 4, Roma","A piedi 2 min · Sosta 18 min",
+   "Esci dalla chiesa, gira a sinistra e cammina dritto per 100 metri nel vicolo fino alla piazza. L'ingresso del cortile rinascimentale è sulla sinistra, al civico 4."),
+ S_("14:40","15:00","🏛️","Piazza Colonna e Palazzo Chigi","Via del Corso","Piazza Colonna, Roma","A piedi 6 min · Sosta 14 min",
+   "Esci, gira a destra e prendi la prima a sinistra per uscire su Via del Corso. Gira a sinistra e cammina dritto verso nord per due isolati: la piazza è sulla sinistra (Colonna di Marco Aurelio)."),
+ S_("15:00","15:30","⛲","Piazza di Spagna e la Barcaccia","Via Condotti","Piazza di Spagna, Roma","A piedi 12 min · Sosta 18 min",
+   "Torna su Via del Corso e continua verso nord. Gira alla quinta a destra in Via Condotti. Percorrila tutta dritta fino alla piazza, ai piedi della scalinata di Trinità dei Monti."),
+ S_("15:30","15:50","🗿","Fontana del Babuino","Via del Babuino 150","Via del Babuino 150, Roma","A piedi 8 min · Sosta 12 min",
+   "Guardando la grande scalinata, imbocca la via che parte sulla sinistra della piazza (Via del Babuino). Cammina sul marciapiede di sinistra fino al civico 150 per vedere la statua parlante."),
+ S_("15:50","16:15","🌿","Passeggiata in Via Margutta","La via degli artisti","Via Margutta, Roma","A piedi 2 min · Sosta 23 min",
+   "Subito dopo la statua gira a sinistra nel piccolo Vicolo del Babuino. In fondo gira a destra in Via Margutta. Cammina dritto lungo la via degli artisti ricoperta di edera."),
+ S_("16:15","16:35","🏛️","Piazza del Popolo","Obelisco e chiese gemelle","Piazza del Popolo, Roma","A piedi 5 min · Sosta 15 min",
+   "In fondo a Via Margutta gira a sinistra in Via di Ripetta e subito a destra per entrare nella piazza. Cammina tra l'obelisco centrale e le due chiese gemelle sul lato sud."),
+ S_("16:35","16:50","🌇","Belvedere del Pincio","Colle del Pincio","Terrazza del Pincio, Roma","A piedi 8 min · Sosta 7 min",
+   "Tieni il lato est della piazza e sali le rampe monumentali curve fino in cima alla terrazza per il panorama classico."),
+ S_("16:50","17:15","🌳","Passeggiata a Villa Borghese","Viale dell'Orologio","Villa Borghese, Roma","Camminata 25 min",
+   "Dalla terrazza non scendere: prosegui dritto verso l'interno della villa lungo Viale dell'Orologio. Cammina sotto gli alberi, supera l'Orologio ad Acqua e arriva all'ingresso pedonale sotterraneo sopra la fermata Spagna.","free"),
+ S_("17:15","17:30","🚇","Metro Spagna → Barberini","Metro A, una sola fermata","Metropolitana Barberini, Roma","15 min",
+   "Scendi con le scale mobili ed entra nella stazione Metro A Spagna. Prendi la metro in direzione Anagnina per una sola fermata e scendi a Barberini.",null,"transit"),
+ S_("17:30","17:50","⛪","Santa Maria della Vittoria","L'Estasi di Santa Teresa del Bernini","Chiesa di Santa Maria della Vittoria, Roma","A piedi 4 min · Sosta 16 min",
+   "Esci a Piazza Barberini e imbocca in salita Via XX Settembre. La chiesa è sulla sinistra: lì c'è l'Estasi di Santa Teresa del Bernini."),
+ S_("17:50","18:05","⛪","Santa Caterina a Magnanapoli","Largo Magnanapoli","Chiesa di Santa Caterina a Magnanapoli, Roma","A piedi 10 min · Sosta 5 min",
+   "Esci, attraversa la piazza e prendi Via Torino in discesa. Al primo incrocio gira a destra in Via Nazionale e scendi dritto per 500 metri. La chiesa è alla rotonda, a sinistra, sopra le scale curve."),
+ S_("18:05","19:15","🛁","Relax in hotel","Hotel Ariston",HOTEL.q,"A piedi 10 min · Riposo 1 ora",
+   "Risali Via Nazionale, gira a destra in Via Torino, poi a sinistra in Via Viminale. Costeggia la stazione e gira a sinistra in Via Filippo Turati, al civico 16. Tempo per doccia e cambio d'abito."),
+ S_("19:15","19:40","🚇","Verso Borgo Pio","Metro A fino a Ottaviano","Via degli Ombrellari 7, Roma","25 min",
+   "A piedi a Termini (Via Gioberti). Prendi la Metro A (direzione Battistini) e scendi a Ottaviano. Esci e prendi Via Ottaviano in discesa (verso sud). Prosegui in Via di Porta Angelica costeggiando le mura. Gira a sinistra in Via dei Corridori.",null,"transit"),
+ S_("19:40","20:25","🍝","Cena da Sfiziami Italian Bistrot","Via degli Ombrellari 7","Sfiziami Italian Bistrot, Via degli Ombrellari 7, Roma","Sosta 45 min",
+   "Dopo Via dei Corridori prendi subito la prima a sinistra, in Via degli Ombrellari. Il ristorante è al civico 7. Cena prima dello spettacolo, con piatti della tradizione o taglieri espressi."),
+ S_("20:25","21:00","🚶","Verso l'Auditorium","Via della Conciliazione 4","Auditorium della Conciliazione, Via della Conciliazione 4, Roma","A piedi 5 min · Attesa 30 min",
+   "Esci, a destra su Via degli Ombrellari, a destra su Borgo Pio fino in fondo. Sbuchi su Via della Conciliazione: gira a sinistra e trovi il teatro sulla sinistra, al civico 4. All'ingresso ci sono i controlli di sicurezza."),
+ S_("21:00","22:45","🎭","Spettacolo a teatro","Auditorium della Conciliazione","Auditorium della Conciliazione, Via della Conciliazione 4, Roma","1 ora e 45",
+   "Aldo Cazzullo e Angelo Branduardi sul palco dell'Auditorium.","show"),
+ S_("22:45","23:15","🚇","Ritorno in hotel","Metro A da Ottaviano a Termini",HOTEL.q,"30 min",
+   "Esci, a destra su Via della Conciliazione, a destra in Via di Porta Angelica e sempre dritto verso nord fino a Piazza Risorgimento. Prendi Via Ottaviano fino alla Metro A, direzione Anagnina, fino a Termini. Poi a piedi in hotel.",null,"transit")
+];
+
+const FRI = [
+ S_("08:30","09:15","🥐","Colazione in hotel","Sala colazioni dell'Hotel Ariston",HOTEL.q,"Sosta 45 min",
+   "Colazione a buffet nella sala colazioni dell'albergo."),
+ S_("09:15","09:30","🧳","Check-out e deposito bagagli","Reception dell'Hotel Ariston",HOTEL.q,"Sosta 15 min",
+   "Libera la camera e lascia i trolley al deposito custodito gratuito della reception, per tutta la giornata."),
+ S_("09:30","10:00","🚌","Autobus H verso Trastevere","Piazza dei Cinquecento","Piazza dei Cinquecento, Roma","30 min",
+   "Esci a sinistra su Via Turati e vai dritto per 250 metri fino alle pensiline di Piazza dei Cinquecento. Sali sul bus H (direzione Dei Capasso) e scendi alla sesta fermata: Ministero Pubblica Istruzione.",null,"transit"),
+ S_("10:00","10:10","🚶","Ingresso a Trastevere","Via della Lungara 10","Galleria Corsini, Via della Lungara 10, Roma","A piedi 10 min",
+   "Sceso dal bus cammina sul viale nella stessa direzione della corsa, gira alla prima a sinistra (Via Luciano Manara). Vai sempre dritto, attraversa la piazza e arrivi su Via Garibaldi. Passa l'arco di Porta Settimiana e gira a sinistra in Via della Lungara. Il museo è al civico 10."),
+ S_("10:10","11:00","🖼️","Galleria Corsini","San Giovanni Battista di Caravaggio","Galleria Corsini, Via della Lungara 10, Roma","Visita 50 min",
+   "Visita alla pinacoteca barocca, con le collezioni e la tela del San Giovanni Battista di Caravaggio.","pay"),
+ S_("11:00","11:40","⛲","Salita al Fontanone del Gianicolo","Via Garibaldi","Fontana dell'Acqua Paola, Roma","A piedi 15 min · Sosta 25 min",
+   "Esci dal museo, gira a destra verso Porta Settimiana. Passa sotto l'arco e gira subito a destra in salita su Via Garibaldi. Segui i tornanti principali verso l'alto fino alla fontana dell'Acqua Paola."),
+ S_("11:40","12:15","⛪","Piazza Santa Maria in Trastevere","Il cuore del rione","Piazza di Santa Maria in Trastevere, Roma","A piedi 15 min · Sosta 20 min",
+   "Torna in discesa ripercorrendo i tornanti di Via Garibaldi. Arrivato in pianura gira a sinistra nella via pedonale Via della Scala. Percorrila tutta dritta fino alla piazza principale."),
+ S_("12:15","12:50","🍕","Pranzo all'Antico Forno La Renella","Via del Moro 15","Antico Forno La Renella, Via del Moro 15, Roma","A piedi 3 min · Sosta 32 min",
+   "Con la facciata della chiesa di fronte, prendi il vicolo sul lato sinistro (Via della Paglia che diventa Via del Moro). Il forno storico è sulla sinistra, al civico 15. Pizza al taglio cotta a legna, servizio rapido."),
+ S_("12:50","13:30","🌿","Passeggiata nei vicoli","Vicolo del Cinque · Via del Moro","Vicolo del Cinque, Roma","Sosta 40 min",
+   "Passeggiata libera nei vicoli medievali del rione (Vicolo del Cinque, Via del Moro, Vicolo del Bologna), pieni di piante rampicanti.","free"),
+ S_("13:30","13:55","🌉","I tre ponti e l'Isola Tiberina","Ponte Cestio · Ponte Fabricio","Isola Tiberina, Roma","A piedi 25 min",
+   "Dai vicoli cammina verso est fino a Piazza in Piscinula, sul fiume. Gira a sinistra e attraversa il primo ponte di pietra (Ponte Cestio). Cammina dritto sull'Isola Tiberina ed esci dalla parte opposta sul Ponte Fabricio."),
+ S_("13:55","14:15","🏛️","Portico d'Ottavia e Ghetto","Teatro di Marcello","Portico d'Ottavia, Roma","Sosta 20 min",
+   "Finito il ponte prosegui dritto superando la chiesetta. Ti trovi davanti ai resti romani del Portico d'Ottavia e, sulla destra, al Teatro di Marcello.","free"),
+ S_("14:15","14:30","⛲","Piazza Mattei e Fontana delle Tartarughe","Piazza Mattei","Fontana delle Tartarughe, Piazza Mattei, Roma","A piedi 2 min · Sosta 13 min",
+   "Con le colonne del Portico d'Ottavia alle spalle, prendi il vicolo stretto di fronte a te (Via della Reginella). Percorrilo tutto per 100 metri fino alla piazza. La fontana è al centro."),
+ S_("14:30","14:55","🛍️","Spesa da Antico Forno Roscioli","Via dei Chiavari 34","Antico Forno Roscioli, Via dei Chiavari 34, Roma","A piedi 7 min · Sosta 18 min",
+   "Esci dalla piazza prendendo Via dei Falegnami (a sinistra, guardando la fontana). Dritto, attraversa Via Arenula ed entra in Via dei Giubbonari. Gira alla seconda a destra: Via dei Chiavari 34. Compra la pizza bianca con la mortadella da portare in treno."),
+ S_("14:55","15:30","⛲","Piazza Navona, il bis","Passando da Campo de' Fiori","Piazza Navona, Roma","A piedi 15 min · Sosta 20 min",
+   "Esci, a sinistra su Via dei Chiavari fino in fondo. Attraversa Corso Vittorio Emanuele II, dritto in Via dei Baullari, attraversa Campo de' Fiori, esci sul lato opposto in Via della Cuccagna ed entra a Piazza Navona."),
+ S_("15:30","15:55","🏛️","Pantheon, saluto finale","Piazza della Rotonda","Pantheon, Piazza della Rotonda, Roma","A piedi 5 min · Sosta 20 min",
+   "Esci dal lato est di Piazza Navona (Via Corsia Agonale), attraversa Corso del Rinascimento, prendi Via Giustiniani dritto fino a Piazza della Rotonda. Sosta per le foto e un ultimo sguardo al monumento."),
+ S_("15:55","16:15","🏛️","Il tempio nascosto","Piazza di Pietra · Tempio di Adriano","Piazza di Pietra, Roma","A piedi 5 min · Sosta 15 min",
+   "Con il Pantheon alle spalle prendi la via sul lato sinistro (Via dei Pastini). Dritto per due isolati, poi gira a destra in Via de' Burrò fino a Piazza di Pietra. Le colonne del tempio antico sono dentro il palazzo, sulla sinistra."),
+ S_("16:15","16:40","🏛️","Piazza Venezia e Altare della Patria","Il Vittoriano","Piazza Venezia, Roma","A piedi 10 min · Sosta 15 min",
+   "Esci da Piazza di Pietra dal lato est (nella stessa direzione) per sbucare su Via del Corso. Gira a destra e cammina sempre dritto verso sud per 400 metri fino alla grande piazza davanti al monumento bianco."),
+ S_("16:40","17:15","🚇","Rientro sicuro con la Metro B","Colosseo → Termini","Metropolitana Colosseo, Roma","35 min",
+   "Davanti al monumento di Piazza Venezia gira a sinistra e imbocca la grande via pedonale Via dei Fori Imperiali. Percorrila tutta fino in fondo: a sinistra trovi l'ingresso della Metro B Colosseo. Prendi la metro direzione Rebibbia/Jonio per 2 fermate e scendi a Termini. Eviti il traffico.",null,"transit"),
+ S_("17:15","17:35","🧳","Recupero dei bagagli in hotel","Hotel Ariston · Via Filippo Turati 16",HOTEL.q,"A piedi 5 min · Sosta 15 min",
+   "Esci da Termini lato Via Giolitti, prendi Via Gioberti a sinistra e Via Turati a sinistra fino all'Hotel Ariston (civico 16). Ritira i trolley lasciati la mattina al deposito."),
+ S_("17:35","18:30","🚆","Treno per Brescia","Italo 9944 · Carrozza 2 · Posti 2 e 3","Stazione Roma Termini, Roma","Partenza 18:30 · Prima Business",
+   "Esci dall'hotel con i bagagli, rientra a Termini dall'ingresso laterale di Via Giolitti, supera i varchi di sicurezza e raggiungi la carrozza. Italo 9944 parte alle 18:30: carrozza 2, posti 2 e 3 (Prima Business, con Fast Track). Le porte si chiudono 2 minuti prima.","book")
+];
+
+const DAYS = {
+  wed:{n:"7",w:"Mer",full:"Mercoledì 7 ottobre",title:"Rione Monti e centro storico",sub:"Arrivo a Roma, passeggiata tra chiese e fontane, cena da Cecio"},
+  thu:{n:"8",w:"Gio",full:"Giovedì 8 ottobre",title:"Università, Villa Borghese e teatro",sub:"Mattina all'università, poi Roma barocca e sera a teatro"},
+  fri:{n:"9",w:"Ven",full:"Venerdì 9 ottobre",title:"Trastevere, Ghetto e ritorno a casa",sub:"Arte e vicoli, ultimo giro in centro, treno alle 18:30"}
+};
+const EXTRA = {
+  wed:[{t:"San Luigi dei Francesi: i tre Caravaggio",wh:"Alle 16:30, mentre ti sposti da Piazza Navona al Pantheon",how:"Uscendo dal lato est di Piazza Navona, prima di attraversare Corso del Rinascimento, gira a sinistra ed entra in Piazza di San Luigi dei Francesi. La chiesa è sulla sinistra.",see:"Nella cappella in fondo a sinistra (Cappella Contarelli) ci sono tre tele di Caravaggio. Ingresso libero, bastano 5 minuti.",q:"Chiesa di San Luigi dei Francesi, Roma"}],
+  thu:[{t:"Palazzo Spada: la prospettiva del Borromini",wh:"Alle 13:20, dopo Palazzo Barberini e prima del pranzo",how:"Invece di andare dritto al Pantheon, scendi lungo Via del Corso, gira a sinistra verso Campo de' Fiori e arriva in Piazza Capo di Ferro 13.",see:"Nel cortile c'è la Galleria Prospettica del Borromini: un corridoio che sembra lungo decine di metri ma è lungo appena 8, con una statua alta meno di un metro. Si guarda in 5 minuti dal cortile.",q:"Palazzo Spada, Piazza Capo di Ferro 13, Roma"}],
+  fri:[{t:"Santa Cecilia e la cripta",wh:"Alle 12:50, appena finito il pranzo da La Renella",how:"Invece di risalire subito verso i vicoli, cammina verso sud-est nel cuore di Trastevere per 5 minuti fino a Piazza di Santa Cecilia 22.",see:"La scultura di Stefano Maderno. Sotto l'altare, con circa 2 € di offerta, si scende in una cripta con colonne e mosaici antichi.",q:"Basilica di Santa Cecilia in Trastevere, Roma"}]
+};
+
+/* ============ STATO ============ */
+const KEY="roma26-ernesto-graziella";
+let S={focus:{wed:0,thu:0,fri:0},variant:"A",scale:1.1,train:{}};
+try{const r=JSON.parse(localStorage.getItem(KEY)||"null");if(r){S={...S,...r,focus:{...S.focus,...(r.focus||{})}}}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+
+function todayKey(){const d=new Date();if(d.getFullYear()!==2026||d.getMonth()!==9)return null;return {7:"wed",8:"thu",9:"fri"}[d.getDate()]||null}
+let tab = todayKey()||"wed";
+const TABS=["wed","thu","fri","info"];
+let resetArm=false;
+
+function list(dk){ if(dk==="wed") return [...(S.variant==="A"?WA:WB),...WR]; return dk==="thu"?THU:FRI; }
+const enc=encodeURIComponent;
+const gm=(st)=>`https://www.google.com/maps/dir/?api=1&destination=${enc(st.q)}&travelmode=${st.tm||"walking"}`;
+const wz=(st)=>`https://waze.com/ul?q=${enc(st.q)}&navigate=yes`;
+const mins=t=>{const [h,m]=t.split(":").map(Number);return h*60+m};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+const I={
+  pin:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>',
+  car:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.4 4 9.7c0 3 1.5 5.2 3.3 7 .3.3.4.7.3 1.1l-.4 2a1 1 0 0 0 1.4 1.1l2.3-1.2c.3-.1.6-.1.9 0 2.5.6 5.6.2 7.6-2C20.800 15.800 20 12 20 9.700 20 5.400 16.400 2 12 2zm-3 8a1.300 1.300 0 1 1 0-2.600A1.300 1.300 0 0 1 9 10zm6 0a1.300 1.300 0 1 1 0-2.600A1.300 1.300 0 0 1 15 10z"/></svg>',
+  chk:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.500l5 5L20 6.500"/></svg>',
+  dn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9l7 7 7-7"/></svg>',
+  ph:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.600 10.800a15.100 15.100 0 0 0 6.600 6.600l2.200-2.200a1 1 0 0 1 1-.25 11.400 11.400 0 0 0 3.600.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.500a1 1 0 0 1 1 1c0 1.250.2 2.450.57 3.570a1 1 0 0 1-.25 1z"/></svg>'
+};
+
+/* ============ DISEGNO ============ */
+const app=document.getElementById("app");
+document.getElementById("hotelnav").href=`https://www.google.com/maps/dir/?api=1&destination=${enc(HOTEL.q)}&travelmode=walking`;
+
+function applyScale(){document.documentElement.style.setProperty("--s",S.scale)}
+function greet(){const h=new Date().getHours();return h<5?"Buonanotte":h<13?"Buongiorno":h<18?"Buon pomeriggio":"Buonasera"}
+
+function hero(){
+  return `<section class="hero">
+    <button class="size" data-act="size" aria-label="Cambia la grandezza del testo">Aa Testo</button>
+    <p class="hi">${greet()}</p>
+    <h1>ROMA</h1>
+    <p class="who">Ernesto e Graziella · 7–9 ottobre 2026</p>
+    <svg class="road" viewBox="0 0 640 12" preserveAspectRatio="none" aria-hidden="true"><path d="M0 6 H640" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="640"/></svg>
+  </section>`;
+}
+function tabsHtml(){
+  const ti=TABS.indexOf(tab), td=todayKey();
+  return `<nav class="tabs" role="tablist" aria-label="Giorni">
+    <span class="pill" style="transform:translateX(${ti*100}%)"></span>
+    ${TABS.map(k=>{
+      const d=DAYS[k]; const on=k===tab;
+      if(k==="info") return `<button class="tab ${on?"on":""}" role="tab" aria-selected="${on}" data-act="tab" data-k="info"><span class="n">i</span><span class="w">Info</span></button>`;
+      return `<button class="tab ${on?"on":""}" role="tab" aria-selected="${on}" data-act="tab" data-k="${k}">${td===k?'<span class="oggi" title="Oggi"></span>':""}<span class="n">${d.n}</span><span class="w">${d.w}</span></button>`;
+    }).join("")}
+  </nav>`;
+}
+function badge(st){
+  const b=[];
+  if(st.tag==="pay") b.push('<span class="badge b-pay">A pagamento</span>');
+  if(st.tag==="free") b.push('<span class="badge b-free">Gratis</span>');
+  if(st.tag==="book") b.push('<span class="badge b-book">Prenotato</span>');
+  if(st.tag==="show") b.push('<span class="badge b-book">Biglietti dello spettacolo</span>');
+  if(st.m) b.push(`<span class="badge b-meta">${esc(st.m)}</span>`);
+  return b.length?`<div class="badges">${b.join("")}</div>`:"";
+}
+function focusCard(st,i,n,animate){
+  const t=st.b?`${st.a} – ${st.b}`:`dalle ${st.a}`;
+  return `<article class="focus ${animate?"in":""}" id="focus" aria-live="polite">
+    <div class="when"><div class="coin" aria-hidden="true">${st.ic}</div><div><div class="time">${t}</div></div></div>
+    <h3>${esc(st.t)}</h3>
+    <p class="place">${esc(st.p)}</p>
+    ${badge(st)}
+    <div class="go">
+      <a class="btn gm" href="${gm(st)}" target="_blank" rel="noopener">${I.pin}Google Maps</a>
+      <a class="btn wz" href="${wz(st)}" target="_blank" rel="noopener">${I.car}Waze</a>
+    </div>
+    <button class="how-t" data-act="how" aria-expanded="false" aria-controls="how">Leggi il percorso ${I.dn}</button>
+    <div class="how" id="how"><div><p>${esc(st.h)}</p></div></div>
+    <button class="btn done" data-act="next">${I.chk}Fatto, passiamo alla prossima</button>
+    ${i>0?'<button class="back" data-act="prev">Torna alla tappa precedente</button>':""}
+  </article>`;
+}
+function finCard(dk){
+  const last=dk==="fri";
+  return `<article class="fin" id="focus">
+    <div class="seal" aria-hidden="true">SPQR</div>
+    <h3>${last?"Buon viaggio!":"Giornata completata"}</h3>
+    <p>${last?"Roma vi saluta. Ci vediamo presto, e grazie per la bella gita.":"Bravi! Riposatevi, domani c'è un altro bel giorno."}</p>
+    <a class="btn gm full" href="tel:${HOTEL.tel}">${I.ph}Chiama l'hotel</a>
+    <button class="back" data-act="prev">Torna all'ultima tappa</button>
+  </article>`;
+}
+function dayView(dk,animate){
+  const d=DAYS[dk], L=list(dk), n=L.length;
+  let f=Math.max(0,Math.min(S.focus[dk]||0,n)); S.focus[dk]=f;
+  const variant = dk==="wed" ? `<div class="variant"><p>All'arrivo la camera è già pronta?</p>
+      <div class="seg"><button class="${S.variant==="A"?"on":""}" data-act="var" data-v="A">No, lascio i bagagli</button><button class="${S.variant==="B"?"on":""}" data-act="var" data-v="B">Sì, check-in subito</button></div></div>` : "";
+  const prog = `<div class="prog"><div class="lbl"><span>${f>=n?"Giornata finita":`Tappa ${f+1} di ${n}`}</span><span>${f} fatte</span></div>
+     <div class="segs">${L.map((_,i)=>`<i class="${i<f?"d":i===f?"c":""}"></i>`).join("")}</div></div>`;
+  // avviso orario (solo nei giorni veri)
+  let nudge="";
+  if(todayKey()===dk){
+    const now=new Date(), m=now.getHours()*60+now.getMinutes();
+    const idx=L.findIndex(s=>m>=mins(s.a)&&m<(s.b?mins(s.b):mins(s.a)+90));
+    if(idx>=0 && idx!==f) nudge=`<div class="nudge"><span>Secondo il programma, ora tocca a: <b>${esc(L[idx].t)}</b></span><button data-act="goto" data-i="${idx}">Vai</button></div>`;
+  }
+  const rows=L.map((s,i)=>`<li><button class="row ${i<f?"past":i===f?"cur":""}" data-act="goto" data-i="${i}" ${i===f?'aria-current="step"':""}>
+      <span class="dot">${i<f?I.chk:""}</span>
+      <span class="tx"><span class="tt">${s.ic} ${esc(s.t)}</span><span class="tm">${s.a}${s.b?" – "+s.b:""}</span></span></button></li>`).join("");
+  const ex=(EXTRA[dk]||[]).map(e=>{
+    const st={q:e.q};
+    return `<div class="extra"><h4>${esc(e.t)}</h4><span class="wh">${esc(e.wh)}</span>
+      <p><b>Come arrivare.</b> ${esc(e.how)}</p><p><b>Cosa vedi.</b> ${esc(e.see)}</p>
+      <div class="go"><a class="btn gm" href="${gm(st)}" target="_blank" rel="noopener">${I.pin}Google Maps</a><a class="btn wz" href="${wz(st)}" target="_blank" rel="noopener">${I.car}Waze</a></div></div>`;
+  }).join("");
+  return `<div class="daytitle"><h2>${d.full}</h2><p>${d.title}. ${d.sub}.</p></div>
+    ${variant}${prog}${nudge}
+    ${f>=n?finCard(dk):focusCard(L[f],f,n,animate)}
+    <h2 class="sect">Tutte le tappe del giorno</h2>
+    <ul class="list">${rows}</ul>
+    <h2 class="sect">Se avanza tempo</h2>
+    <p class="hint" style="margin:0 .2rem">Visite in più, facoltative. Solo se siete in anticipo e con le gambe in forma.</p>
+    ${ex}`;
+}
+function infoView(){
+  const T=S.train||{};
+  const f=(leg,k,lab,ph)=>`<div><label>${lab}<input data-act="train" data-leg="${leg}" data-k="${k}" value="${esc((T[leg]||{})[k]||"")}" placeholder="${ph}" inputmode="text" autocomplete="off"></label></div>`;
+  return `<div class="daytitle"><h2>Informazioni utili</h2><p>Hotel, treni e numeri da avere sempre a portata di mano.</p></div>
+  <div class="card"><h3>🏨 ${HOTEL.nome}</h3>
+    <p>${HOTEL.ind}</p>
+    <p class="hint">A 5 minuti a piedi dalla stazione Termini. Dai binari: uscita Via Giolitti, a sinistra, prima a destra Via Gioberti, poi a sinistra in Via Turati.</p>
+    <div class="go"><a class="btn gm" href="tel:${HOTEL.tel}">${I.ph}Chiama ${HOTEL.telTxt}</a>
+    <a class="btn wz" href="https://www.google.com/maps/dir/?api=1&destination=${enc(HOTEL.q)}&travelmode=walking" target="_blank" rel="noopener">${I.pin}Portami qui</a></div></div>
+
+  <div class="card"><h3>🚆 Treno di andata</h3>
+    <p><b>Mercoledì 7 ottobre</b></p>
+    <dl class="kv"><dt>Partenza</dt><dd>Brescia, ore 06:47</dd><dt>Arrivo</dt><dd>Roma Termini, ore 11:01</dd><dt>Treno</dt><dd>Italo 9941</dd><dt>Carrozza</dt><dd>9</dd><dt>Ernesto</dt><dd>Posto 3</dd><dt>Graziella</dt><dd>Posto 4</dd><dt>Ambiente</dt><dd>Smart</dd></dl>
+    <p class="hint">Codice biglietto: <b>ULFZQH</b>. In Smart i bagagli non devono superare 75 × 53 × 30 cm.</p></div>
+
+  <div class="card"><h3>🚆 Treno di ritorno</h3>
+    <p><b>Venerdì 9 ottobre</b></p>
+    <dl class="kv"><dt>Partenza</dt><dd>Roma Termini, ore 18:30</dd><dt>Arrivo</dt><dd>Brescia, ore 22:36</dd><dt>Treno</dt><dd>Italo 9944</dd><dt>Carrozza</dt><dd>2</dd><dt>Ernesto</dt><dd>Posto 2</dd><dt>Graziella</dt><dd>Posto 3</dd><dt>Ambiente</dt><dd>Prima Business</dd></dl>
+    <p>C'è il servizio <b>Fast Track</b>. Alle 17:35 siete già in stazione. Le porte del treno si chiudono 2 minuti prima della partenza.</p>
+    <p class="hint">Codice biglietto: <b>ULFZQH</b>. Il binario compare sui tabelloni circa 15 minuti prima.</p></div>
+
+  <div class="card"><h3>🎫 Biglietti</h3>
+    <p>I biglietti Italo sono nel PDF che ti sei salvato su WhatsApp. Se il controllore li chiede, mostrate quel PDF o il codice <b>ULFZQH</b>.</p></div>
+
+  <div class="card"><h3>📌 Prenotazioni</h3>
+    <dl class="kv"><dt>Mer 20:30</dt><dd>Cena, Trattoria Cecio, Via Gioberti 26</dd><dt>Gio 21:00</dt><dd>Spettacolo, Auditorium della Conciliazione</dd><dt>Ven 18:30</dt><dd>Treno per Brescia</dd></dl></div>
+
+  <div class="card"><h3>🆘 In caso di emergenza</h3>
+    <p>Numero unico europeo per ambulanza, polizia e vigili del fuoco.</p>
+    <div class="go"><a class="btn gm full" style="grid-column:1/-1" href="tel:112">${I.ph}Chiama il 112</a></div></div>
+
+  <button class="reset ${resetArm?"sure":""}" data-act="reset">${resetArm?"Tocca ancora per confermare":"Ricomincia da capo (azzera le tappe fatte)"}</button>`;
+}
+
+function render(animate=false){
+  applyScale();
+  app.innerHTML = hero()+tabsHtml()+(tab==="info"?infoView():dayView(tab,animate));
+}
+
+/* ============ AZIONI ============ */
+function stamp(cb){
+  const el=document.getElementById("stamp");
+  try{navigator.vibrate&&navigator.vibrate(35)}catch(e){}
+  el.classList.remove("go"); void el.offsetWidth; el.classList.add("go");
+  setTimeout(cb,620);
+}
+function toFocus(){const f=document.getElementById("focus");if(f)f.scrollIntoView({behavior:"smooth",block:"start"})}
+
+app.addEventListener("click",e=>{
+  const b=e.target.closest("[data-act]"); if(!b) return;
+  const a=b.dataset.act;
+  if(a==="tab"){tab=b.dataset.k;resetArm=false;render();window.scrollTo({top:0,behavior:"smooth"});}
+  else if(a==="size"){S.scale = S.scale<1.15?1.25:S.scale<1.3?1.4:1.1; save(); render();}
+  else if(a==="how"){const open=b.getAttribute("aria-expanded")!=="true";b.setAttribute("aria-expanded",open);document.getElementById("how").classList.toggle("open",open);}
+  else if(a==="next"){stamp(()=>{S.focus[tab]=(S.focus[tab]||0)+1;save();render(true);toFocus();});}
+  else if(a==="prev"){S.focus[tab]=Math.max(0,(S.focus[tab]||0)-1);save();render(true);toFocus();}
+  else if(a==="goto"){S.focus[tab]=+b.dataset.i;save();render(true);toFocus();}
+  else if(a==="var"){if(S.variant!==b.dataset.v){S.variant=b.dataset.v;S.focus.wed=0;save();render(true);}}
+  else if(a==="reset"){
+    if(!resetArm){resetArm=true;render();setTimeout(()=>{if(resetArm){resetArm=false;if(tab==="info")render();}},4000);}
+    else{resetArm=false;S.focus={wed:0,thu:0,fri:0};save();render();}
+  }
+});
+app.addEventListener("input",e=>{
+  const i=e.target.closest("[data-act='train']"); if(!i) return;
+  const {leg,k}=i.dataset; S.train=S.train||{}; S.train[leg]=S.train[leg]||{}; S.train[leg][k]=i.value; save();
+});
+
+render();
+</script>
+</body>
+</html>
